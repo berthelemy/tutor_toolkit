@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}Lesson - Tutor Toolkit{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-start mb-3">
+  <div>
+    <h1 class="h3 mb-1">Lesson</h1>
+    <div class="text-muted">
+      <div><strong>When:</strong> {{ lesson.start_datetime }}</div>
+      <div>
+        <strong>For:</strong>
+        {% if lesson.group %}
+          Group: {{ lesson.group.name }}
+        {% else %}
+          Student: {{ lesson.student }}
+        {% endif %}
+      </div>
+      <div><strong>Duration:</strong> {{ lesson.duration_minutes }} minutes</div>
+    </div>
+  </div>
+  <div class="d-flex gap-2">
+    <a class="btn btn-outline-secondary" href="{% url 'lessons:edit' lesson.pk %}">Edit lesson</a>
+    <a class="btn btn-outline-primary" href="{% url 'lessons:list' %}">Back to lessons</a>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-12 col-lg-6">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h2 class="h6 mb-0">Objectives</h2>
+        <a class="btn btn-sm btn-outline-primary" href="{% url 'lessons:objective_create' lesson.pk %}">Add</a>
+      </div>
+      <div class="card-body">
+        {% if lesson.objectives.all %}
+          <ul class="mb-0">
+            {% for obj in lesson.objectives.all %}
+              <li>{{ obj.text }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <div class="text-muted">No objectives yet.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-lg-6">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h2 class="h6 mb-0">Resources</h2>
+        <a class="btn btn-sm btn-outline-primary" href="{% url 'lessons:resource_create' lesson.pk %}">Add</a>
+      </div>
+      <div class="card-body">
+        {% if lesson.resources.all %}
+          <ul class="mb-0">
+            {% for r in lesson.resources.all %}
+              <li>
+                <strong>{{ r.title }}</strong>
+                {% if r.url %}
+                  - <a href="{{ r.url }}" target="_blank" rel="noopener">{{ r.url }}</a>
+                {% endif %}
+                {% if r.notes %}
+                  <div class="text-muted small">{{ r.notes }}</div>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <div class="text-muted">No resources yet.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-lg-6">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h2 class="h6 mb-0">Homework</h2>
+        <a class="btn btn-sm btn-outline-primary" href="{% url 'lessons:homework_create' lesson.pk %}">Add</a>
+      </div>
+      <div class="card-body">
+        {% if lesson.homework_tasks.all %}
+          <ul class="mb-0">
+            {% for hw in lesson.homework_tasks.all %}
+              <li>
+                {{ hw.description }}
+                {% if hw.due_date %}
+                  <span class="text-muted small">(due {{ hw.due_date }})</span>
+                {% endif %}
+                {% if hw.is_completed %}
+                  <span class="badge bg-success">done</span>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <div class="text-muted">No homework yet.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-lg-6">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h2 class="h6 mb-0">Notes</h2>
+        <a class="btn btn-sm btn-outline-primary" href="{% url 'lessons:note_create' lesson.pk %}">Add</a>
+      </div>
+      <div class="card-body">
+        {% if lesson.notes.all %}
+          <ul class="mb-0">
+            {% for n in lesson.notes.all %}
+              <li>
+                <div class="text-muted small">{{ n.created_at }}</div>
+                <div>{{ n.content }}</div>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <div class="text-muted">No notes yet.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

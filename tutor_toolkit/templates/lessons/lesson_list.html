@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Lessons - Tutor Toolkit{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 mb-0">Lessons</h1>
+  <a class="btn btn-primary" href="{% url 'lessons:create' %}">New lesson</a>
+</div>
+
+{% if lessons %}
+  <div class="card">
+    <div class="table-responsive">
+      <table class="table table-striped mb-0">
+        <thead>
+          <tr>
+            <th>When</th>
+            <th>For</th>
+            <th>Duration</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for lesson in lessons %}
+            <tr>
+              <td>{{ lesson.start_datetime }}</td>
+              <td>
+                {% if lesson.group %}
+                  {{ lesson.group.name }}
+                {% else %}
+                  {{ lesson.student }}
+                {% endif %}
+              </td>
+              <td>{{ lesson.duration_minutes }} min</td>
+              <td class="text-end">
+                <a class="btn btn-sm btn-outline-primary" href="{% url 'lessons:detail' lesson.pk %}">View</a>
+                <a class="btn btn-sm btn-outline-secondary" href="{% url 'lessons:edit' lesson.pk %}">Edit</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% else %}
+  <div class="alert alert-info">No lessons yet.</div>
+{% endif %}
+{% endblock %}
