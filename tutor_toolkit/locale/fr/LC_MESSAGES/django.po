@@ -55,8 +55,6 @@ msgid "Selected group is not in the current school."
 msgstr "Le groupe sélectionné n'est pas dans l'école actuelle."
 
 #: lessons/forms.py:65 lessons/models.py:40
-#, fuzzy
-#| msgid "Select a student to view lessons."
 msgid "Selected student is not in the current school."
 msgstr "Le étudiant sélectionné n'est pas dans l'école actuelle."
 
@@ -65,8 +63,6 @@ msgid "Duration must be greater than 0."
 msgstr "La durée doit être supérieure à 0."
 
 #: lessons/models.py:33
-#, fuzzy
-#| msgid "Please choose exactly one of Group or Student."
 msgid "A lesson must have exactly one of group or student set."
 msgstr "Veuillez choisir exactement un groupe ou un étudiant."
 
@@ -76,7 +72,7 @@ msgstr "Vous n'avez pas accès à cette école."
 
 #: schools/views.py:33
 msgid "School switched."
-msgstr "École basée."
+msgstr "École changée."
 
 #: students/forms.py:14
 msgid "First name"
