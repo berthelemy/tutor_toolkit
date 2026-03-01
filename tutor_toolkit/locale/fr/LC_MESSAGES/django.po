@@ -64,7 +64,7 @@ msgstr "La durée doit être supérieure à 0."
 
 #: lessons/models.py:33
 msgid "A lesson must have exactly one of group or student set."
-msgstr "Veuillez choisir exactement un groupe ou un étudiant."
+msgstr "Une leçon doit comporter exactement un groupe ou un ensemble d'élèves."
 
 #: schools/views.py:29
 msgid "You do not have access to that school."
