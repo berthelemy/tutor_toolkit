@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from django.views.generic import CreateView, DetailView, ListView, UpdateView
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from .forms import HomeworkTaskForm, LessonForm, LessonNoteForm, LessonObjectiveForm, LessonResourceForm
 from .mixins import CurrentSchoolRequiredMixin
@@ -80,16 +80,133 @@ class LessonObjectiveCreateView(LoginRequiredMixin, CurrentSchoolRequiredMixin, 
     form_class = LessonObjectiveForm
     template_name = 'lessons/objective_form.html'
 
-    def dispatch(self, request, *args, **kwargs):
-        self.lesson = get_object_or_404(Lesson, pk=kwargs['lesson_id'], school=self.current_school)
-        return super().dispatch(request, *args, **kwargs)
+    def get_lesson(self):
+        return get_object_or_404(Lesson, pk=self.kwargs['lesson_id'], school=self.current_school)
 
     def form_valid(self, form):
-        form.instance.lesson = self.lesson
+        lesson = self.get_lesson()
+        form.instance.lesson = lesson
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('lessons:detail', kwargs={'pk': self.lesson.pk})
+        lesson = self.get_lesson()
+        return reverse('lessons:detail', kwargs={'pk': lesson.pk})
+
+
+class LessonObjectiveUpdateView(LoginRequiredMixin, CurrentSchoolRequiredMixin, UpdateView):
+    model = LessonObjective
+    form_class = LessonObjectiveForm
+    template_name = 'lessons/objective_form.html'
+
+    def get_queryset(self):
+        return LessonObjective.objects.filter(lesson__school=self.current_school)
+
+    def form_valid(self, form):
+        self.lesson = form.instance.lesson
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('lessons:detail', kwargs={'pk': self.object.lesson_id})
+
+
+class LessonObjectiveDeleteView(LoginRequiredMixin, CurrentSchoolRequiredMixin, DeleteView):
+    model = LessonObjective
+    template_name = 'lessons/confirm_delete.html'
+
+    def get_queryset(self):
+        return LessonObjective.objects.filter(lesson__school=self.current_school)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['cancel_url'] = reverse('lessons:detail', kwargs={'pk': self.object.lesson_id})
+        return context
+
+    def get_success_url(self):
+        return reverse('lessons:detail', kwargs={'pk': self.object.lesson_id})
+
+
+class LessonResourceUpdateView(LoginRequiredMixin, CurrentSchoolRequiredMixin, UpdateView):
+    model = LessonResource
+    form_class = LessonResourceForm
+    template_name = 'lessons/resource_form.html'
+
+    def get_queryset(self):
+        return LessonResource.objects.filter(lesson__school=self.current_school)
+
+    def get_success_url(self):
+        return reverse('lessons:detail', kwargs={'pk': self.object.lesson_id})
+
+
+class LessonResourceDeleteView(LoginRequiredMixin, CurrentSchoolRequiredMixin, DeleteView):
+    model = LessonResource
+    template_name = 'lessons/confirm_delete.html'
+
+    def get_queryset(self):
+        return LessonResource.objects.filter(lesson__school=self.current_school)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['cancel_url'] = reverse('lessons:detail', kwargs={'pk': self.object.lesson_id})
+        return context
+
+    def get_success_url(self):
+        return reverse('lessons:detail', kwargs={'pk': self.object.lesson_id})
+
+
+class HomeworkTaskUpdateView(LoginRequiredMixin, CurrentSchoolRequiredMixin, UpdateView):
+    model = HomeworkTask
+    form_class = HomeworkTaskForm
+    template_name = 'lessons/homework_form.html'
+
+    def get_queryset(self):
+        return HomeworkTask.objects.filter(lesson__school=self.current_school)
+
+    def get_success_url(self):
+        return reverse('lessons:detail', kwargs={'pk': self.object.lesson_id})
+
+
+class HomeworkTaskDeleteView(LoginRequiredMixin, CurrentSchoolRequiredMixin, DeleteView):
+    model = HomeworkTask
+    template_name = 'lessons/confirm_delete.html'
+
+    def get_queryset(self):
+        return HomeworkTask.objects.filter(lesson__school=self.current_school)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['cancel_url'] = reverse('lessons:detail', kwargs={'pk': self.object.lesson_id})
+        return context
+
+    def get_success_url(self):
+        return reverse('lessons:detail', kwargs={'pk': self.object.lesson_id})
+
+
+class LessonNoteUpdateView(LoginRequiredMixin, CurrentSchoolRequiredMixin, UpdateView):
+    model = LessonNote
+    form_class = LessonNoteForm
+    template_name = 'lessons/note_form.html'
+
+    def get_queryset(self):
+        return LessonNote.objects.filter(lesson__school=self.current_school)
+
+    def get_success_url(self):
+        return reverse('lessons:detail', kwargs={'pk': self.object.lesson_id})
+
+
+class LessonNoteDeleteView(LoginRequiredMixin, CurrentSchoolRequiredMixin, DeleteView):
+    model = LessonNote
+    template_name = 'lessons/confirm_delete.html'
+
+    def get_queryset(self):
+        return LessonNote.objects.filter(lesson__school=self.current_school)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['cancel_url'] = reverse('lessons:detail', kwargs={'pk': self.object.lesson_id})
+        return context
+
+    def get_success_url(self):
+        return reverse('lessons:detail', kwargs={'pk': self.object.lesson_id})
 
 
 class LessonResourceCreateView(LoginRequiredMixin, CurrentSchoolRequiredMixin, CreateView):
@@ -97,16 +214,17 @@ class LessonResourceCreateView(LoginRequiredMixin, CurrentSchoolRequiredMixin, C
     form_class = LessonResourceForm
     template_name = 'lessons/resource_form.html'
 
-    def dispatch(self, request, *args, **kwargs):
-        self.lesson = get_object_or_404(Lesson, pk=kwargs['lesson_id'], school=self.current_school)
-        return super().dispatch(request, *args, **kwargs)
+    def get_lesson(self):
+        return get_object_or_404(Lesson, pk=self.kwargs['lesson_id'], school=self.current_school)
 
     def form_valid(self, form):
-        form.instance.lesson = self.lesson
+        lesson = self.get_lesson()
+        form.instance.lesson = lesson
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('lessons:detail', kwargs={'pk': self.lesson.pk})
+        lesson = self.get_lesson()
+        return reverse('lessons:detail', kwargs={'pk': lesson.pk})
 
 
 class HomeworkTaskCreateView(LoginRequiredMixin, CurrentSchoolRequiredMixin, CreateView):
@@ -114,16 +232,17 @@ class HomeworkTaskCreateView(LoginRequiredMixin, CurrentSchoolRequiredMixin, Cre
     form_class = HomeworkTaskForm
     template_name = 'lessons/homework_form.html'
 
-    def dispatch(self, request, *args, **kwargs):
-        self.lesson = get_object_or_404(Lesson, pk=kwargs['lesson_id'], school=self.current_school)
-        return super().dispatch(request, *args, **kwargs)
+    def get_lesson(self):
+        return get_object_or_404(Lesson, pk=self.kwargs['lesson_id'], school=self.current_school)
 
     def form_valid(self, form):
-        form.instance.lesson = self.lesson
+        lesson = self.get_lesson()
+        form.instance.lesson = lesson
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('lessons:detail', kwargs={'pk': self.lesson.pk})
+        lesson = self.get_lesson()
+        return reverse('lessons:detail', kwargs={'pk': lesson.pk})
 
 
 class LessonNoteCreateView(LoginRequiredMixin, CurrentSchoolRequiredMixin, CreateView):
@@ -131,13 +250,14 @@ class LessonNoteCreateView(LoginRequiredMixin, CurrentSchoolRequiredMixin, Creat
     form_class = LessonNoteForm
     template_name = 'lessons/note_form.html'
 
-    def dispatch(self, request, *args, **kwargs):
-        self.lesson = get_object_or_404(Lesson, pk=kwargs['lesson_id'], school=self.current_school)
-        return super().dispatch(request, *args, **kwargs)
+    def get_lesson(self):
+        return get_object_or_404(Lesson, pk=self.kwargs['lesson_id'], school=self.current_school)
 
     def form_valid(self, form):
-        form.instance.lesson = self.lesson
+        lesson = self.get_lesson()
+        form.instance.lesson = lesson
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('lessons:detail', kwargs={'pk': self.lesson.pk})
+        lesson = self.get_lesson()
+        return reverse('lessons:detail', kwargs={'pk': lesson.pk})
