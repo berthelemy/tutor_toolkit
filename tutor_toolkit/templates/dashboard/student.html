@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Review by student - Tutor Toolkit{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 mb-0">Review by student</h1>
+</div>
+
+<form method="get" class="card mb-3">
+  <div class="card-body">
+    <div class="row g-2 align-items-end">
+      <div class="col-12 col-md-6">
+        <label class="form-label" for="student_id">Student</label>
+        <select class="form-select" name="student_id" id="student_id" required>
+          <option value="">Select a student</option>
+          {% for s in students %}
+            <option value="{{ s.id }}" {% if selected_student and s.id == selected_student.id %}selected{% endif %}>{{ s }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-6 col-md-3">
+        <label class="form-label" for="start">From</label>
+        <input class="form-control" type="date" name="start" id="start" value="{{ start }}">
+      </div>
+      <div class="col-6 col-md-3">
+        <label class="form-label" for="end">To</label>
+        <input class="form-control" type="date" name="end" id="end" value="{{ end }}">
+      </div>
+      <div class="col-12">
+        <button class="btn btn-outline-primary" type="submit">Filter</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+{% if selected_student %}
+  <h2 class="h5">Lessons for {{ selected_student }}</h2>
+  {% if lessons %}
+    <div class="card">
+      <div class="table-responsive">
+        <table class="table table-striped mb-0">
+          <thead>
+            <tr>
+              <th>When</th>
+              <th>Type</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for lesson in lessons %}
+              <tr>
+                <td>{{ lesson.start_datetime }}</td>
+                <td>
+                  {% if lesson.student and lesson.student.id == selected_student.id %}
+                    Ad-hoc lesson
+                  {% else %}
+                    Group: {{ lesson.group.name }}
+                  {% endif %}
+                </td>
+                <td class="text-end">
+                  <a class="btn btn-sm btn-outline-primary" href="{% url 'lessons:detail' lesson.pk %}">View</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% else %}
+    <div class="alert alert-info">No lessons found for the selected filters.</div>
+  {% endif %}
+{% else %}
+  <div class="alert alert-secondary">Select a student to view lessons.</div>
+{% endif %}
+{% endblock %}

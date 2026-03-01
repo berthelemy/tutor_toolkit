@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Review by day - Tutor Toolkit{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 mb-0">Review by day</h1>
+  <form method="get" class="d-flex gap-2 align-items-center">
+    <input class="form-control" type="date" name="date" value="{{ selected_date|date:'Y-m-d' }}">
+    <button class="btn btn-outline-primary" type="submit">Go</button>
+  </form>
+</div>
+
+{% if lessons %}
+  <div class="card">
+    <div class="table-responsive">
+      <table class="table table-striped mb-0">
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>For</th>
+            <th>Duration</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for lesson in lessons %}
+            <tr>
+              <td>{{ lesson.start_datetime|date:'H:i' }}</td>
+              <td>
+                {% if lesson.group %}
+                  Group: {{ lesson.group.name }}
+                {% else %}
+                  Student: {{ lesson.student }}
+                {% endif %}
+              </td>
+              <td>{{ lesson.duration_minutes }} min</td>
+              <td class="text-end">
+                <a class="btn btn-sm btn-outline-primary" href="{% url 'lessons:detail' lesson.pk %}">View</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% else %}
+  <div class="alert alert-info">No lessons on this day.</div>
+{% endif %}
+{% endblock %}
