@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Tutor Toolkit{% endblock %}</title>
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand" href="/">Tutor Toolkit</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Home</a>
+            </li>
+            {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'students:list' %}">Students</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'students:groups' %}">Groups</a>
+              </li>
+            {% endif %}
+          </ul>
+          <div class="d-flex align-items-center gap-2">
+            {% if user.is_authenticated %}
+              {% if school_memberships %}
+                <form method="post" action="{% url 'schools:switch' %}" class="d-flex align-items-center gap-2">
+                  {% csrf_token %}
+                  <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                  <select class="form-select form-select-sm" name="school_id" aria-label="Select school">
+                    {% for membership in school_memberships %}
+                      <option value="{{ membership.school.id }}" {% if current_school and membership.school.id == current_school.id %}selected{% endif %}>
+                        {{ membership.school.name }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                  <button class="btn btn-outline-light btn-sm" type="submit">Switch</button>
+                </form>
+              {% endif %}
+              <span class="navbar-text text-light small">{{ user.username }}</span>
+              <a class="btn btn-outline-light btn-sm" href="{% url 'logout' %}">Logout</a>
+            {% else %}
+              <a class="btn btn-outline-light btn-sm" href="{% url 'login' %}">Login</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-4">
+      {% bootstrap_messages %}
+      {% block content %}
+      {% endblock %}
+    </div>
+
+    <footer class="bg-light text-center text-muted py-3 mt-5">
+      <div class="container">
+        <p>&copy; 2024 Tutor Toolkit. All rights reserved.</p>
+      </div>
+    </footer>
+  </body>
+</html>

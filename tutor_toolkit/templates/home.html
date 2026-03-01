@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Tutor Toolkit{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-8">
+    <div class="jumbotron bg-light p-5 rounded">
+      <h1 class="display-4">Welcome to Tutor Toolkit</h1>
+      <p class="lead">A comprehensive platform for tutoring management and student engagement.</p>
+      <hr class="my-4">
+      <p>Get started by exploring our features or create your first tutoring session.</p>
+      <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Quick Actions</h5>
+      </div>
+      <div class="card-body">
+        <div class="d-grid gap-2">
+          <button class="btn btn-outline-primary">Create Session</button>
+          <button class="btn btn-outline-secondary">View Students</button>
+          <button class="btn btn-outline-info">Manage Schedule</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
