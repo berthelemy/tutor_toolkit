@@ -1,5 +1,7 @@
 <!doctype html>
-<html lang="en">
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,38 +13,52 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
-        <a class="navbar-brand" href="/">Tutor Toolkit</a>
+        <a class="navbar-brand" href="/">{% trans "Tutor Toolkit" %}</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
-              <a class="nav-link" href="/">Home</a>
+              <a class="nav-link" href="/">{% trans "Home" %}</a>
             </li>
             {% if user.is_authenticated %}
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'students:list' %}">Students</a>
+                <a class="nav-link" href="{% url 'students:list' %}">{% trans "Students" %}</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'students:groups' %}">Groups</a>
+                <a class="nav-link" href="{% url 'students:groups' %}">{% trans "Groups" %}</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'lessons:list' %}">Lessons</a>
+                <a class="nav-link" href="{% url 'lessons:list' %}">{% trans "Lessons" %}</a>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Review
+                  {% trans "Review" %}
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="{% url 'dashboard:day' %}">By day</a></li>
-                  <li><a class="dropdown-item" href="{% url 'dashboard:week' %}">By week</a></li>
-                  <li><a class="dropdown-item" href="{% url 'dashboard:student' %}">By student</a></li>
+                  <li><a class="dropdown-item" href="{% url 'dashboard:day' %}">{% trans "By day" %}</a></li>
+                  <li><a class="dropdown-item" href="{% url 'dashboard:week' %}">{% trans "By week" %}</a></li>
+                  <li><a class="dropdown-item" href="{% url 'dashboard:student' %}">{% trans "By student" %}</a></li>
                 </ul>
               </li>
             {% endif %}
           </ul>
           <div class="d-flex align-items-center gap-2">
+            <form method="post" action="{% url 'set_language' %}" class="d-flex align-items-center gap-2">
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ request.get_full_path }}">
+              <select class="form-select form-select-sm" name="language" aria-label="Select language">
+                {% get_available_languages as LANGUAGES %}
+                {% get_language_info_list for LANGUAGES as languages %}
+                {% for language in languages %}
+                  <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %}selected{% endif %}>
+                    {{ language.code|upper }}
+                  </option>
+                {% endfor %}
+              </select>
+              <button class="btn btn-outline-light btn-sm" type="submit">{% trans "Apply" %}</button>
+            </form>
             {% if user.is_authenticated %}
               {% if school_memberships %}
                 <form method="post" action="{% url 'schools:switch' %}" class="d-flex align-items-center gap-2">
@@ -55,13 +71,13 @@
                       </option>
                     {% endfor %}
                   </select>
-                  <button class="btn btn-outline-light btn-sm" type="submit">Switch</button>
+                  <button class="btn btn-outline-light btn-sm" type="submit">{% trans "Switch" %}</button>
                 </form>
               {% endif %}
               <span class="navbar-text text-light small">{{ user.username }}</span>
-              <a class="btn btn-outline-light btn-sm" href="{% url 'logout' %}">Logout</a>
+              <a class="btn btn-outline-light btn-sm" href="{% url 'logout' %}">{% trans "Logout" %}</a>
             {% else %}
-              <a class="btn btn-outline-light btn-sm" href="{% url 'login' %}">Login</a>
+              <a class="btn btn-outline-light btn-sm" href="{% url 'login' %}">{% trans "Login" %}</a>
             {% endif %}
           </div>
         </div>
@@ -76,7 +92,7 @@
 
     <footer class="bg-light text-center text-muted py-3 mt-5">
       <div class="container">
-        <p>&copy; 2024 Tutor Toolkit. All rights reserved.</p>
+        <p>{% trans "© 2024 Tutor Toolkit. All rights reserved." %}</p>
       </div>
     </footer>
   </body>

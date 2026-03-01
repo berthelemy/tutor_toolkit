@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 
-{% block title %}Login - Tutor Toolkit{% endblock %}
+{% load i18n %}
+
+{% block title %}{% trans "Login" %} - {% trans "Tutor Toolkit" %}{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-12 col-md-6 col-lg-5">
     <div class="card shadow-sm">
       <div class="card-header">
-        <h1 class="h5 mb-0">Login</h1>
+        <h1 class="h5 mb-0">{% trans "Login" %}</h1>
       </div>
       <div class="card-body">
         {% load django_bootstrap5 %}
@@ -15,12 +17,12 @@
           {% csrf_token %}
           {% bootstrap_form form %}
           <div class="d-grid gap-2">
-            <button class="btn btn-primary" type="submit">Sign in</button>
+            <button class="btn btn-primary" type="submit">{% trans "Sign in" %}</button>
           </div>
         </form>
       </div>
       <div class="card-footer text-muted small">
-        <a href="{% url 'password_reset' %}">Forgot password?</a>
+        <a href="{% url 'password_reset' %}">{% trans "Forgot password?" %}</a>
       </div>
     </div>
   </div>

@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 
-{% block title %}Review by day - Tutor Toolkit{% endblock %}
+{% load i18n %}
+
+{% block title %}{% trans "Review by day" %} - {% trans "Tutor Toolkit" %}{% endblock %}
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-3">
-  <h1 class="h3 mb-0">Review by day</h1>
+  <h1 class="h3 mb-0">{% trans "Review by day" %}</h1>
   <form method="get" class="d-flex gap-2 align-items-center">
     <input class="form-control" type="date" name="date" value="{{ selected_date|date:'Y-m-d' }}">
-    <button class="btn btn-outline-primary" type="submit">Go</button>
+    <button class="btn btn-outline-primary" type="submit">{% trans "Go" %}</button>
   </form>
 </div>
 
@@ -17,10 +19,10 @@
       <table class="table table-striped mb-0">
         <thead>
           <tr>
-            <th>Time</th>
-            <th>For</th>
-            <th>Duration</th>
-            <th class="text-end">Actions</th>
+            <th>{% trans "Time" %}</th>
+            <th>{% trans "For" %}</th>
+            <th>{% trans "Duration" %}</th>
+            <th class="text-end">{% trans "Actions" %}</th>
           </tr>
         </thead>
         <tbody>
@@ -29,14 +31,14 @@
               <td>{{ lesson.start_datetime|date:'H:i' }}</td>
               <td>
                 {% if lesson.group %}
-                  Group: {{ lesson.group.name }}
+                  {% trans "Group:" %} {{ lesson.group.name }}
                 {% else %}
-                  Student: {{ lesson.student }}
+                  {% trans "Student:" %} {{ lesson.student }}
                 {% endif %}
               </td>
               <td>{{ lesson.duration_minutes }} min</td>
               <td class="text-end">
-                <a class="btn btn-sm btn-outline-primary" href="{% url 'lessons:detail' lesson.pk %}">View</a>
+                <a class="btn btn-sm btn-outline-primary" href="{% url 'lessons:detail' lesson.pk %}">{% trans "View" %}</a>
               </td>
             </tr>
           {% endfor %}
@@ -45,6 +47,6 @@
     </div>
   </div>
 {% else %}
-  <div class="alert alert-info">No lessons on this day.</div>
+  <div class="alert alert-info">{% trans "No lessons on this day." %}</div>
 {% endif %}
 {% endblock %}
