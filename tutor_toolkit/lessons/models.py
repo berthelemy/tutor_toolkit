@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 
 from schools.models import School
 from students.models import Student, StudentGroup
@@ -26,17 +27,17 @@ class Lesson(models.Model):
         super().clean()
 
         if self.duration_minutes <= 0:
-            raise ValidationError({'duration_minutes': 'Duration must be greater than 0.'})
+            raise ValidationError({'duration_minutes': _('Duration must be greater than 0.')})
 
         if (self.group is None and self.student is None) or (self.group is not None and self.student is not None):
-            raise ValidationError('A lesson must have exactly one of group or student set.')
+            raise ValidationError(_('A lesson must have exactly one of group or student set.'))
 
         if self.school_id is not None:
             if self.group is not None and self.group.school_id != self.school_id:
-                raise ValidationError({'group': 'Selected group is not in the current school.'})
+                raise ValidationError({'group': _('Selected group is not in the current school.')})
 
             if self.student is not None and self.student.school_id != self.school_id:
-                raise ValidationError({'student': 'Selected student is not in the current school.'})
+                raise ValidationError({'student': _('Selected student is not in the current school.')})
 
     def __str__(self) -> str:
         target = self.group or self.student
