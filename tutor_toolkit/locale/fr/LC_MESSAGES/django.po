@@ -22,10 +22,8 @@ msgid "Date and time"
 msgstr "Date et heure"
 
 #: lessons/forms.py:17
-#, fuzzy
-#| msgid "Duration"
 msgid "Duration (minutes)"
-msgstr "Durée"
+msgstr "Durée (minutes)"
 
 #: lessons/forms.py:18 templates/lessons/lesson_form.html:17
 #: templates/students/group_form.html:5 templates/students/group_form.html:12
