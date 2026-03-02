@@ -2,20 +2,25 @@
 - Create a colour scheme for the application
 - Create a logo for the application
 - Create a favicon for the application
-- Decide on a domain name for the application
+- Decide on a domain name for the application: Try ProfPlan.net
 
 # Product
-- Define the business model
+- Define the product name: Try ProfPlan
+- Register ProfPlan as a trademark
+- Define the business model: Open source, paid for services - installation, hosting, support
+- Define the deployment process for multiple versions of the application
 - Define the pricing
 - Define the payment process
-- Decide on open source license
-- Decide whether to operate as multi-school or single-school
+- Decide on open source license: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International ?
+- Decide whether to operate as multi-school or single-school: Single school, allows for schools to self-host or use a cloud-hosted version
 
 # User
 - Create a user profile page
 - Allow the user to set their default language
 - Allow the user to change their first and last names
 - Allow the user to select their timezone
+- Social logins: Google, Facebook, Microsoft, LinkedIn
+- Allow the user to reset their password
 
 # Language
 - Place language switcher in the footer of all pages, using simple links for each language, and remove the dropdown menu
@@ -34,6 +39,8 @@
 # Lessons
 - When adding a new lesson or editing an existing lesson, the date/time picker should show the time in 5 minute intervals
 - Times should be recorded in the user's timezone
+- Make recurring lessons
+- Delete individual recurring lessons
 
 # Review by student
 - The review by student page should show the objectives and notes for each lesson
@@ -49,7 +56,16 @@
 # Footer
 - The copyright notice should have the current year
 
-# Admin
+# School Admin
+- Add a school admin capability
+- Able to run reports by teacher or by student or by group
+- Able to create students and groups, manually or via import
+- Add school holidays
+
+# Tutor
+- Able to print clean lesson plans for day or week
+- Able to view lessons plans on small screen
+- Able to see how many minutes of lessons are scheduled for each student
 
 
 
